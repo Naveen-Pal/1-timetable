@@ -40,3 +40,22 @@ button:hover {
     margin-top: 20px;
 }
 
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

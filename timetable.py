@@ -3,14 +3,14 @@ from PIL import Image, ImageDraw, ImageFont
 
 def generate_colorful_timetable(roll_number, inside_font_size=12, inside_box_size=(200, 70)):
     def random_color():
-        return (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
+        return (random.randint(200, 255), random.randint(100, 255), random.randint(100, 255))
     roll_number=int(roll_number)
     if not 24110001 <= roll_number <= 24110404:
         print("wrong Roll Number")
         exit(1)
 
     # Increased size of the timetable image
-    timetable_image = Image.new('RGB', (2000, 1200), color='white')
+    timetable_image = Image.new('RGB', (2000, 1180), color='white')
     draw = ImageDraw.Draw(timetable_image)
 
     # Use a larger font for time slots and days
@@ -76,7 +76,7 @@ def generate_colorful_timetable(roll_number, inside_font_size=12, inside_box_siz
             elif (i,j)==(0,2):
                 draw.text((j * inside_box_size[0] + 240, i * 150 + 110), f"Free", fill="black", font=inside_font)
 
-            elif (i,j)==(0,3) or (i,j) =(1,0) :
+            elif (i,j)==(0,3) or (i,j) ==(1,0) :
                 if not ((rn>=226 and rn<=262) or (rn>=152 and rn<=188)):
                     draw.text((j * inside_box_size[0] + 240, i * 150 + 110), f"Lecture", fill="black", font=inside_font)
                     draw.text((j * inside_box_size[0] + 240, i * 150 + 140), f"Writing ", fill="black", font=inside_font)
@@ -306,7 +306,11 @@ def generate_colorful_timetable(roll_number, inside_font_size=12, inside_box_siz
                 draw.text((j * inside_box_size[0] + 240, i * 150 + 110), f"Lab", fill="black", font=inside_font)
                 draw.text((j * inside_box_size[0] + 240, i * 150 + 140), f"Computing", fill="black", font=inside_font)
                 # draw.text((j * inside_box_size[0] + 240, i * 150 + 170), f"venue: 7/108 or 7/109", fill="black", font=inside_font)
-    
+
+
+        draw.text((10, 1135), f"Roll Number: {roll_number}", fill="black", font=ImageFont.load_default().font_variant(size=inside_font_size))
+        draw.text((1700, 1135), f"© 2024, Naveen", fill="black", font=ImageFont.load_default().font_variant(size=inside_font_size))
+        draw.text((40, 20), f"IITGN", fill="black", font=inside_font)
         timetable_image.save(str(roll_number)+'.png')
 
             
