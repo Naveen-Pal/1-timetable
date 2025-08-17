@@ -3,13 +3,13 @@ from PIL import Image, ImageDraw, ImageFont
 
 def get_section(roll_number):
     rn = roll_number - 25110000
-    if rn < 73:  # Adjust these ranges based on actual section divisions
+    if rn <= 73:  # Adjust these ranges based on actual section divisions
         return 1
-    elif rn < 145:
+    elif rn <= 145:
         return 2
-    elif rn < 217:
+    elif rn <= 217:
         return 3
-    elif rn < 289:
+    elif rn <= 289:
         return 4
     else:
         return 5
@@ -126,21 +126,21 @@ def get_slot_info(time_slot, day, section, roll_number):
         1: [("I1", "K1")],
         2: [("J1", "L1")],
         3: [("I2", "M1")],
-        4: [("J1", "L1")],
+        4: [("K2", "L2")],
         5: [("J2", "M2")]
     }
 
     # BS 192 Lab slots based on section and roll number ranges
     bs192_lab_slots = {
-        1: [("J1", "L1")],
+        1: [("K2", "L2")],
         2: [("I2", "M1")],
         3: [("J1", "L1")],
         4: [("I1", "K1")],
         5: {  # Multiple slots based on roll number ranges
-            (25110307, 25110325): [("J1", "L1")],
             (25110289, 25110306): [("I1", "K1")],
+            (25110307, 25110325): [("J1", "L1")],
             (25110326, 25110343): [("I2", "M1")],
-            (25110344, 25110361): [("J1", "L1")]
+            (25110344, 25110361): [("K2", "L2")]
         }
     }
 
