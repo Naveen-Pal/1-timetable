@@ -7,9 +7,9 @@ def get_section(roll_number):
         return 1
     elif rn <= 145:
         return 2
-    elif rn <= 217:
+    elif rn <= 215:
         return 3
-    elif rn <= 289:
+    elif rn <= 288:
         return 4
     else:
         return 5
