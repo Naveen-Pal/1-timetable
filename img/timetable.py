@@ -123,24 +123,24 @@ def get_slot_info(time_slot, day, section, roll_number):
 
     # DIP Lab slots based on section
     dip_lab_slots = {
-        1: [("I1", "K1"), ("J1", "L1")],
-        2: [("I2", "M1"), ("K2", "L2")],
-        3: [("J2", "M2")],
-        4: [("I1", "K1"), ("J1", "L1")],
-        5: [("I2", "M1"), ("K2", "L2")]
+        1: [("I1", "K1")],
+        2: [("J1", "L1")],
+        3: [("I2", "M1")],
+        4: [("J1", "L1")],
+        5: [("J2", "M2")]
     }
 
     # BS 192 Lab slots based on section and roll number ranges
     bs192_lab_slots = {
-        1: {"day": 3, "slots": [("I1", "K1"), ("J1", "L1")]},  # Thursday
-        2: {"day": 2, "slots": [("I2", "M1"), ("K2", "L2")]},  # Wednesday
-        3: {"day": 1, "slots": [("J2", "M2")]},                # Tuesday
-        4: {"day": 0, "slots": [("I1", "K1"), ("J1", "L1")]},  # Monday
-        5: {  # Multiple days based on roll number ranges
-            (25110289, 25110306): {"day": 0, "slots": [("I2", "M1"), ("K2", "L2")]},  # Monday
-            (25110307, 25110325): {"day": 1, "slots": [("I2", "M1"), ("K2", "L2")]},  # Tuesday
-            (25110326, 25110343): {"day": 2, "slots": [("J2", "M2")]},               # Wednesday
-            (25110344, 25110361): {"day": 3, "slots": [("J2", "M2")]}                # Thursday
+        1: [("J1", "L1")],
+        2: [("I2", "M1")],
+        3: [("J1", "L1")],
+        4: [("I1", "K1")],
+        5: {  # Multiple slots based on roll number ranges
+            (25110307, 25110325): [("J1", "L1")],
+            (25110289, 25110306): [("I1", "K1")],
+            (25110326, 25110343): [("I2", "M1")],
+            (25110344, 25110361): [("J1", "L1")]
         }
     }
 
@@ -151,16 +151,15 @@ def get_slot_info(time_slot, day, section, roll_number):
     # Check if it's a BS 192 lab slot for the student's section
     if section == 5:
         # For section 5, check roll number ranges
-        for roll_range, slot_info in bs192_lab_slots[5].items():
-            if roll_range[0] <= roll_number <= roll_range[1] and day == slot_info["day"]:
-                if slot_code in [s for pair in slot_info["slots"] for s in pair]:
+        for roll_range, slots in bs192_lab_slots[5].items():
+            if roll_range[0] <= roll_number <= roll_range[1]:
+                if slot_code in [s for pair in slots for s in pair]:
                     return {"type": "Lab", "course": "BS 192", "venue": "PH Lab"}
     else:
-        # For sections 1-4, check the assigned day
-        section_slot_info = bs192_lab_slots.get(section)
-        if section_slot_info and day == section_slot_info["day"]:
-            if slot_code in [s for pair in section_slot_info["slots"] for s in pair]:
-                return {"type": "Lab", "course": "BS 192", "venue": "PH Lab"}
+        # For sections 1-4, check the slots directly
+        section_slots = bs192_lab_slots.get(section, [])
+        if slot_code in [s for pair in section_slots for s in pair]:
+            return {"type": "Lab", "course": "BS 192", "venue": "PH Lab"}
 
     # Check if it's a DIP lab slot for the student's section
     for section_slots in dip_lab_slots.get(section, []):
