@@ -106,19 +106,25 @@ def get_slot_info(time_slot, day, section, roll_number):
     # Course mapping based on slots
     course_mapping = {
         "A1": {"type": "Tutorial", "course": "Calculus", "venue": "AB 7"},
-        "B1": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
-        "B2": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
+        # "B1": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
+        # "B2": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
         "C1": {"type": "Lecture", "course": "DIP", "venue": "Jasubhai Auditorium"},
         "C2": {"type": "Lecture", "course": "Eng Graphics", "venue": "Jasubhai Auditorium"},
         "E1": {"type": "Lecture", "course": "Calculus", "venue": "Jasubhai Auditorium"},
         "E2": {"type": "Lecture", "course": "Calculus", "venue": "Jasubhai Auditorium"},
         "F1": {"type": "Lecture", "course": "Computing", "venue": "Jasubhai Auditorium"},
-        "H1": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
-        "H2": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
+        # "H1": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
+        # "H2": {"type": "Lab", "course": "Writing", "venue": "AB 7"},
         "N1": {"type": "Lab", "course": "Eng Graphics", "venue": "Surendra LT"},
         "N2": {"type": "Lab", "course": "Eng Graphics", "venue": "Surendra LT"},
         "P1": {"type": "Lab", "course": "Computing", "venue": "AB 10"},
         "P2": {"type": "Lab", "course": "Computing", "venue": "AB 10"}
+    }
+
+    # Writing Lab slots based on roll number
+    writing_lab_slots = {
+        "lower": {"max_roll": 25110247, "slots": ["H1", "H2"]},
+        "upper": {"min_roll": 25110248, "slots": ["B1", "B2"]}
     }
 
     # DIP Lab slots based on section
@@ -165,6 +171,12 @@ def get_slot_info(time_slot, day, section, roll_number):
     for section_slots in dip_lab_slots.get(section, []):
         if slot_code in section_slots:
             return {"type": "Lab", "course": "DIP", "venue": "Surendra LT"}
+
+    # Check Writing lab slots based on roll number
+    if slot_code in writing_lab_slots["lower"]["slots"] and roll_number <= writing_lab_slots["lower"]["max_roll"]:
+        return course_mapping.get(slot_code, {"type": "Lab", "course": "Writing", "venue": "AB 7"})
+    elif slot_code in writing_lab_slots["upper"]["slots"] and roll_number >= writing_lab_slots["upper"]["min_roll"]:
+        return course_mapping.get(slot_code, {"type": "Lab", "course": "Writing", "venue": "AB 7"})
 
     return course_mapping.get(slot_code, {"type": "Free", "course": "", "venue": ""})
 
